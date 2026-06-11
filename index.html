@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LinguaCloud — Kids Learn Languages with AI Friends</title>
+<meta name="description" content="Animated AI tutors that make language learning fun for kids ages 3-14. 15 languages. Safe, ad-free. From $4.99/month.">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#7C3AED">
+<style>
+  :root {
+    --bg: #080112;
+    --surface: #0E0420;
+    --card: #130528;
+    --accent: #A78BFA;
+    --accent2: #7C3AED;
+    --bright: #C084FC;
+    --accent-dim: rgba(167,139,250,0.1);
+    --border: rgba(167,139,250,0.15);
+    --green: #4ADE80;
+    --yellow: #FDE68A;
+    --pink: #F9A8D4;
+    --cyan: #67E8F9;
+    --text: #F3EEFF;
+    --text2: #8B6FAA;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif; line-height: 1.6; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 16px 48px; display: flex; justify-content: space-between; align-items: center;
+    background: rgba(8,1,18,0.92); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo { font-size: 18px; font-weight: 800; color: var(--text); letter-spacing: -0.5px; }
+  .nav-logo span { color: var(--accent); }
+  .nav-links { display: flex; gap: 28px; list-style: none; }
+  .nav-links a { color: var(--text2); text-decoration: none; font-size: 14px; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--text); }
+  .nav-cta { padding: 9px 22px; background: var(--accent2); color: white; font-weight: 700; font-size: 13px; border-radius: 8px; text-decoration: none; transition: opacity 0.2s; }
+  .nav-cta:hover { opacity: 0.88; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh; display: flex; flex-direction: column;
+    justify-content: center; align-items: center; text-align: center;
+    padding: 120px 24px 60px; position: relative; overflow: hidden;
+  }
+  .hero-orb1 {
+    position: absolute; top: 10%; left: 10%; width: 400px; height: 400px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(167,139,250,0.12) 0%, transparent 70%); pointer-events: none;
+  }
+  .hero-orb2 {
+    position: absolute; bottom: 10%; right: 10%; width: 300px; height: 300px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(249,168,212,0.1) 0%, transparent 70%); pointer-events: none;
+  }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--accent-dim); border: 1px solid var(--border);
+    color: var(--bright); font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
+    padding: 6px 16px; border-radius: 20px; margin-bottom: 28px;
+  }
+  h1 { font-size: clamp(42px, 7vw, 76px); font-weight: 900; line-height: 1.0; letter-spacing: -3px; margin-bottom: 24px; max-width: 880px; }
+  .h1-accent { color: var(--accent); }
+  .hero-sub { font-size: clamp(16px, 2vw, 19px); color: var(--text2); max-width: 540px; margin: 0 auto 40px; line-height: 1.65; }
+  .hero-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 40px; }
+  .btn-primary { padding: 15px 32px; background: var(--accent2); color: white; font-size: 15px; font-weight: 800; border-radius: 10px; text-decoration: none; transition: all 0.2s; box-shadow: 0 8px 32px rgba(124,58,237,0.4); }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(124,58,237,0.5); }
+  .btn-secondary { padding: 15px 32px; background: transparent; color: var(--text); font-size: 15px; font-weight: 600; border-radius: 10px; border: 1px solid rgba(255,255,255,0.15); text-decoration: none; transition: all 0.2s; }
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* CHARACTERS */
+  .chars-row { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; padding: 0 20px; }
+  .char-bubble {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 16px; padding: 16px 18px; text-align: center;
+    min-width: 80px; transition: transform 0.2s, border-color 0.2s;
+    cursor: pointer;
+  }
+  .char-bubble:hover { transform: translateY(-4px) scale(1.05); border-color: var(--accent); }
+  .char-emoji { font-size: 28px; display: block; margin-bottom: 6px; }
+  .char-name { font-size: 11px; font-weight: 700; color: var(--accent); }
+  .char-lang { font-size: 10px; color: var(--text2); margin-top: 2px; }
+
+  /* TRUST BAR */
+  .trust-bar { padding: 28px 48px; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); display: flex; justify-content: center; gap: 48px; flex-wrap: wrap; }
+  .trust-item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text2); }
+  .trust-item span { color: var(--green); font-size: 16px; }
+
+  /* SECTIONS */
+  .section { padding: 80px 48px; max-width: 1100px; margin: 0 auto; }
+  .section-label { font-size: 11px; font-weight: 700; letter-spacing: 2px; color: var(--accent); margin-bottom: 16px; }
+  h2 { font-size: clamp(32px, 5vw, 52px); font-weight: 900; letter-spacing: -2px; line-height: 1.05; margin-bottom: 16px; }
+  .section-sub { font-size: 17px; color: var(--text2); max-width: 520px; line-height: 1.6; margin-bottom: 56px; }
+
+  /* FEATURES */
+  .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .feat-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 28px; transition: border-color 0.2s, transform 0.2s; }
+  .feat-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+  .feat-icon { width: 44px; height: 44px; border-radius: 10px; background: var(--accent-dim); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 16px; }
+  .feat-title { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+  .feat-body { font-size: 13px; color: var(--text2); line-height: 1.6; }
+
+  /* LANGUAGES */
+  .lang-section { padding: 80px 48px; background: var(--surface); }
+  .lang-inner { max-width: 1000px; margin: 0 auto; text-align: center; }
+  .lang-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-top: 48px; }
+  .lang-pill {
+    background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+    padding: 14px 12px; text-align: center; transition: all 0.2s;
+  }
+  .lang-pill:hover { border-color: var(--accent); background: var(--accent-dim); }
+  .lang-flag { font-size: 24px; display: block; margin-bottom: 6px; }
+  .lang-name { font-size: 12px; font-weight: 600; color: var(--text); }
+
+  /* PRICING */
+  .pricing-section { padding: 80px 48px; max-width: 960px; margin: 0 auto; }
+  .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 48px; }
+  .price-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 32px; transition: border-color 0.2s; }
+  .price-card.featured { border-color: var(--accent); position: relative; }
+  .price-card.featured::before { content: 'MOST POPULAR'; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--accent2); color: white; font-size: 9px; font-weight: 800; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; white-space: nowrap; }
+  .price-tier { font-size: 11px; font-weight: 700; letter-spacing: 1px; color: var(--accent); margin-bottom: 12px; }
+  .price-amount { font-size: 44px; font-weight: 900; letter-spacing: -2px; line-height: 1; }
+  .price-mo { font-size: 16px; color: var(--text2); }
+  .price-desc { font-size: 13px; color: var(--text2); margin: 10px 0 20px; }
+  .price-features { list-style: none; }
+  .price-features li { font-size: 13px; padding: 8px 0; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
+  .price-features li:last-child { border-bottom: none; }
+  .price-features li::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; }
+  .price-btn { display: block; text-align: center; margin-top: 24px; padding: 12px; border-radius: 9px; font-size: 13px; font-weight: 700; text-decoration: none; transition: all 0.2s; }
+  .price-btn-outline { border: 1px solid var(--border); color: var(--text); }
+  .price-btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+  .price-btn-solid { background: var(--accent2); color: white; }
+  .price-btn-solid:hover { opacity: 0.88; }
+
+  /* SAFETY SECTION */
+  .safety-section { padding: 80px 48px; max-width: 900px; margin: 0 auto; }
+  .safety-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 48px; }
+  .safety-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 28px; display: flex; gap: 18px; }
+  .safety-icon { font-size: 28px; flex-shrink: 0; }
+  .safety-title { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+  .safety-body { font-size: 13px; color: var(--text2); line-height: 1.6; }
+
+  /* CTA */
+  .cta-section { padding: 100px 48px; text-align: center; background: radial-gradient(ellipse at center, rgba(124,58,237,0.1) 0%, transparent 60%); }
+  .cta-section h2 { margin-bottom: 16px; }
+  .cta-section p { color: var(--text2); font-size: 17px; margin-bottom: 36px; }
+
+  /* FOOTER */
+  footer { padding: 32px 48px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; color: var(--text2); font-size: 13px; }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav { padding: 14px 20px; }
+    .nav-links { display: none; }
+    h1 { font-size: 38px; letter-spacing: -2px; }
+    .section, .lang-section, .safety-section, .pricing-section { padding: 60px 20px; }
+    .features-grid, .pricing-grid, .safety-grid { grid-template-columns: 1fr; }
+    .lang-grid { grid-template-columns: repeat(3, 1fr); }
+    .trust-bar { gap: 20px; }
+    footer { flex-direction: column; gap: 10px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Lingua<span>Cloud</span></div>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#languages">Languages</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#safety">Safety</a></li>
+  </ul>
+  <a href="#pricing" class="nav-cta">Try Free for 7 Days</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-orb1"></div>
+  <div class="hero-orb2"></div>
+  <div class="hero-eyebrow">CHILDREN'S LANGUAGE LEARNING · AGES 3–14</div>
+  <h1>Your Kids Learn Languages<br>with <span class="h1-accent">AI Friends</span><br>They Love.</h1>
+  <p class="hero-sub">Animated AI tutors that make learning feel like play. 15 languages. Real accent choices. Safe, ad-free, and designed specifically for children.</p>
+  <div class="hero-actions">
+    <a href="#pricing" class="btn-primary">Start Free Trial — 7 Days</a>
+    <a href="#features" class="btn-secondary">See how it works</a>
+  </div>
+
+  <!-- Character Row -->
+  <div class="chars-row">
+    <div class="char-bubble">
+      <span class="char-emoji">🦁</span>
+      <div class="char-name">Leo</div>
+      <div class="char-lang">Spanish</div>
+    </div>
+    <div class="char-bubble">
+      <span class="char-emoji">🧙</span>
+      <div class="char-name">Zara</div>
+      <div class="char-lang">French</div>
+    </div>
+    <div class="char-bubble">
+      <span class="char-emoji">🤖</span>
+      <div class="char-name">Nova</div>
+      <div class="char-lang">Japanese</div>
+    </div>
+    <div class="char-bubble">
+      <span class="char-emoji">🧜</span>
+      <div class="char-name">Mira</div>
+      <div class="char-lang">Arabic</div>
+    </div>
+    <div class="char-bubble">
+      <span class="char-emoji">⚡</span>
+      <div class="char-name">Bolt</div>
+      <div class="char-lang">German</div>
+    </div>
+    <div class="char-bubble">
+      <span class="char-emoji">🐉</span>
+      <div class="char-name">Drake</div>
+      <div class="char-lang">Mandarin</div>
+    </div>
+    <div class="char-bubble">
+      <span class="char-emoji">🧚</span>
+      <div class="char-name">Pixie</div>
+      <div class="char-lang">Italian</div>
+    </div>
+    <div class="char-bubble">
+      <span class="char-emoji">🥷</span>
+      <div class="char-name">Zuko</div>
+      <div class="char-lang">Korean</div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <div class="trust-item"><span>🛡️</span> COPPA Compliant</div>
+  <div class="trust-item"><span>🚫</span> Zero Ads</div>
+  <div class="trust-item"><span>🌍</span> 15 Languages</div>
+  <div class="trust-item"><span>👶</span> Ages 3–14</div>
+  <div class="trust-item"><span>📱</span> No App Store Needed</div>
+  <div class="trust-item"><span>✅</span> 7-Day Free Trial</div>
+</div>
+
+<!-- FEATURES -->
+<div id="features">
+  <div class="section">
+    <div class="section-label">FEATURES</div>
+    <h2>Learning that<br>actually sticks.</h2>
+    <p class="section-sub">We built every feature around how children actually learn — through play, repetition, reward, and characters they connect with.</p>
+    <div class="features-grid">
+      <div class="feat-card">
+        <div class="feat-icon">🦁</div>
+        <div class="feat-title">11 Animated AI Tutors</div>
+        <div class="feat-body">Original characters kids genuinely want to spend time with. Each character has a unique personality, accent, and teaching style matched to their language.</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">⏱️</div>
+        <div class="feat-title">Daily 5–10 Minute Lessons</div>
+        <div class="feat-body">Short enough for young attention spans, consistent enough to build real habits. Streaks, rewards, and daily check-ins keep kids coming back.</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">🎤</div>
+        <div class="feat-title">Real Accent Choices</div>
+        <div class="feat-body">Learning "Spanish" isn't the same as learning Mexican, Castilian, or Colombian Spanish. Kids learn the version that's right for their family and community.</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">🧠</div>
+        <div class="feat-title">Adaptive AI Conversations</div>
+        <div class="feat-body">The AI responds to what your child says, not just multiple choice answers. Real back-and-forth practice builds actual speaking confidence.</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">📊</div>
+        <div class="feat-title">Parent Dashboard</div>
+        <div class="feat-body">Track every lesson, milestone, and vocabulary mastered. Weekly progress emails keep you in the loop — no account sharing required.</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">📖</div>
+        <div class="feat-title">Bedtime Stories Add-On</div>
+        <div class="feat-body">AI-narrated bedtime stories in the target language. Immersive listening practice that makes language feel natural at the end of every day.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LANGUAGES -->
+<div id="languages" class="lang-section">
+  <div class="lang-inner">
+    <div class="section-label">15 LANGUAGES</div>
+    <h2>Whatever language matters<br>to your family — we have it.</h2>
+    <div class="lang-grid">
+      <div class="lang-pill"><span class="lang-flag">🇺🇸</span><div class="lang-name">English</div></div>
+      <div class="lang-pill"><span class="lang-flag">🇪🇸</span><div class="lang-name">Spanish</div></div>
+      <div class="lang-pill"><span class="lang-flag">🇸🇦</span><div class="lang-name">Arabic</div></div>
+      <div class="lang-pill"><span class="lang-flag">🇫🇷</span><div class="lang-name">French</div></div>
+      <div class="lang-pill"><span class="lang-flag">🇨🇳</span><div class="lang-name">Mandarin</div></div>
+      <div class="lang-pill"><span class="lang-flag">🇩🇪</span><div class="lang-name">German</div></div>
+      <div class="lang-pill"><span class="lang-flag">🇯🇵</span><div class="lang-name">Japanese</div></div>
+      <div class="lang-pill"><span class="lang-flag">🇵🇹</span><div class="lang-name">Portuguese</div></div>
+      <div class="lang-pill"><span class="lang-flag">🇮🇳</span><div class="lang-name">Hindi</div></div>
+      <div class="lang-pill"><span class="lang-flag">🇰🇷</span><div class="lang-name">Korean</div></div>
+      <div class="lang-pill"><span class="lang-flag">🇮🇹</span><div class="lang-name">Italian</div></div>
+      <div class="lang-pill"><span class="lang-flag">🇷🇺</span><div class="lang-name">Russian</div></div>
+      <div class="lang-pill"><span class="lang-flag">🇹🇷</span><div class="lang-name">Turkish</div></div>
+      <div class="lang-pill"><span class="lang-flag">🇻🇳</span><div class="lang-name">Vietnamese</div></div>
+      <div class="lang-pill"><span class="lang-flag">🇵🇭</span><div class="lang-name">Tagalog</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- PRICING -->
+<div id="pricing" class="pricing-section">
+  <div class="section-label">PRICING</div>
+  <h2>Start with one language.<br>Add more anytime.</h2>
+  <div class="pricing-grid">
+    <div class="price-card">
+      <div class="price-tier">STARTER</div>
+      <div><span class="price-amount">$4.99</span><span class="price-mo">/mo</span></div>
+      <div class="price-desc">1 language, all features included</div>
+      <ul class="price-features">
+        <li>1 language of your choice</li>
+        <li>All AI tutor characters</li>
+        <li>Daily lessons + quizzes</li>
+        <li>Parent progress dashboard</li>
+        <li>Ages 3–14 content tiers</li>
+        <li>7-day free trial</li>
+      </ul>
+      <a href="#" class="price-btn price-btn-outline">Start Free Trial</a>
+    </div>
+    <div class="price-card featured">
+      <div class="price-tier">FAMILY PICK</div>
+      <div><span class="price-amount">$7.99</span><span class="price-mo">/mo</span></div>
+      <div class="price-desc">2 languages — great for bilingual homes</div>
+      <ul class="price-features">
+        <li>2 languages of your choice</li>
+        <li>Everything in Starter</li>
+        <li>Up to 3 child profiles</li>
+        <li>Progress tracking per child</li>
+        <li>Priority support</li>
+        <li>7-day free trial</li>
+      </ul>
+      <a href="#" class="price-btn price-btn-solid">Start Free Trial</a>
+    </div>
+    <div class="price-card">
+      <div class="price-tier">EXPLORER</div>
+      <div><span class="price-amount">$9.99</span><span class="price-mo">/mo</span></div>
+      <div class="price-desc">3 languages — for the curious learner</div>
+      <ul class="price-features">
+        <li>3 languages of your choice</li>
+        <li>Everything in Family Pick</li>
+        <li>Bedtime Stories add-on included</li>
+        <li>Custom story generator</li>
+        <li>Unlimited child profiles</li>
+        <li>7-day free trial</li>
+      </ul>
+      <a href="#" class="price-btn price-btn-outline">Start Free Trial</a>
+    </div>
+  </div>
+  <p style="text-align:center;margin-top:24px;font-size:13px;color:var(--text2)">
+    All plans include a 7-day free trial. Cancel anytime. No credit card required to start.
+  </p>
+</div>
+
+<!-- SAFETY -->
+<div id="safety" class="safety-section">
+  <div class="section-label">CHILD SAFETY</div>
+  <h2>Built for children.<br>Safe by design.</h2>
+  <p class="section-sub" style="margin-bottom:0">We take children's safety seriously. Every design decision puts your child's wellbeing first.</p>
+  <div class="safety-grid">
+    <div class="safety-card">
+      <div class="safety-icon">🚫</div>
+      <div>
+        <div class="safety-title">Zero Ads. Ever.</div>
+        <div class="safety-body">No advertising, no sponsored content, no tracking pixels. LinguaCloud is subscription-only so your child's attention belongs to their learning, not advertisers.</div>
+      </div>
+    </div>
+    <div class="safety-card">
+      <div class="safety-icon">🛡️</div>
+      <div>
+        <div class="safety-title">COPPA Compliant</div>
+        <div class="safety-body">We follow Children's Online Privacy Protection Act (COPPA) guidelines. No personal data collected from children under 13 without verifiable parental consent.</div>
+      </div>
+    </div>
+    <div class="safety-card">
+      <div class="safety-icon">👁️</div>
+      <div>
+        <div class="safety-title">Parent Controls Everything</div>
+        <div class="safety-body">Parents manage all accounts, languages, and settings. Children cannot make purchases, change settings, or access anything outside their learning path.</div>
+      </div>
+    </div>
+    <div class="safety-card">
+      <div class="safety-icon">✅</div>
+      <div>
+        <div class="safety-title">Age-Appropriate Content</div>
+        <div class="safety-body">All content is reviewed and rated for each age tier (3–8 and 8–14). The AI is specifically constrained to educational, age-appropriate conversation only.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-section">
+  <div class="section-label" style="text-align:center">GET STARTED</div>
+  <h2>Give your kids the gift<br>of a second language.</h2>
+  <p>7-day free trial. No credit card needed. Cancel anytime.</p>
+  <a href="#pricing" class="btn-primary" style="font-size:16px;padding:16px 40px;display:inline-block">
+    Start Free Trial Today
+  </a>
+  <p style="margin-top:16px;font-size:13px;color:var(--text2)">Nile Dreams Digital · niledreamsdigital.com</p>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2026 Nile Dreams Digital. All rights reserved.</span>
+  <span>LinguaCloud · Children's Language Learning</span>
+</footer>
+</body>
+</html>
