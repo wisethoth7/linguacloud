@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LinguaCloud — Create Account</title>
+<style>
+:root{
+  --bg:#080112;--surface:#0E0420;--card:#130528;
+  --accent:#A78BFA;--accent2:#7C3AED;--border:rgba(167,139,250,0.15);
+  --text:#F3EEFF;--text2:#8B6FAA;--green:#4ADE80;--red:#F87171;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,'Helvetica Neue',Arial,sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.wrap{width:100%;max-width:460px}
+.logo{text-align:center;margin-bottom:28px}
+.logo-text{font-size:24px;font-weight:800;color:var(--text)}
+.logo-text span{color:var(--accent)}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px}
+h2{font-size:20px;font-weight:800;margin-bottom:6px}
+.sub{font-size:13px;color:var(--text2);margin-bottom:24px;line-height:1.5}
+.step{display:none}
+.step.active{display:block}
+label{font-size:12px;font-weight:700;color:var(--text2);display:block;margin-bottom:5px}
+label .req{color:var(--red)}
+input,select{
+  width:100%;padding:11px 14px;background:var(--card);
+  border:1px solid var(--border);border-radius:9px;color:var(--text);
+  font-size:14px;outline:none;margin-bottom:14px;
+}
+input:focus,select:focus{border-color:var(--accent)}
+.btn{
+  width:100%;padding:13px;background:var(--accent2);color:white;
+  font-size:14px;font-weight:800;border-radius:9px;border:none;cursor:pointer;
+  transition:opacity 0.2s;margin-top:4px;
+}
+.btn:hover{opacity:0.88}
+.btn-outline{
+  width:100%;padding:13px;background:transparent;color:var(--text2);
+  font-size:13px;font-weight:600;border-radius:9px;border:1px solid var(--border);
+  cursor:pointer;margin-top:8px;
+}
+.age-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+.age-opt{
+  padding:20px 12px;background:var(--card);border:1px solid var(--border);
+  border-radius:12px;text-align:center;cursor:pointer;transition:all 0.15s;
+}
+.age-opt:hover,.age-opt.selected{border-color:var(--accent);background:rgba(167,139,250,0.08)}
+.age-opt .age-icon{font-size:28px;display:block;margin-bottom:6px}
+.age-opt .age-label{font-size:13px;font-weight:700;color:var(--text)}
+.age-opt .age-sub{font-size:11px;color:var(--text2);margin-top:2px}
+.info-box{
+  background:rgba(167,139,250,0.06);border:1px solid var(--border);
+  border-radius:10px;padding:14px;margin-bottom:18px;font-size:12px;
+  color:var(--text2);line-height:1.6;
+}
+.info-box strong{color:var(--accent)}
+.consent-list{list-style:none;margin-bottom:18px}
+.consent-list li{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05);
+  font-size:13px;color:var(--text2);
+}
+.consent-list li:last-child{border-bottom:none}
+.consent-list li::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0;margin-top:1px}
+.checkbox-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:12px}
+.checkbox-row input[type=checkbox]{width:18px;height:18px;accent-color:var(--accent2);flex-shrink:0;margin:1px 0 0}
+.checkbox-row span{font-size:12px;color:var(--text2);line-height:1.5}
+.checkbox-row a{color:var(--accent);text-decoration:none}
+.success-icon{font-size:48px;text-align:center;display:block;margin-bottom:16px}
+.lang-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px}
+.lang-opt{
+  padding:10px 8px;background:var(--card);border:1px solid var(--border);
+  border-radius:9px;text-align:center;cursor:pointer;transition:all 0.15s;
+}
+.lang-opt:hover,.lang-opt.selected{border-color:var(--accent);background:rgba(167,139,250,0.08)}
+.lang-opt .lf{font-size:20px;display:block;margin-bottom:3px}
+.lang-opt .ln{font-size:11px;font-weight:600;color:var(--text)}
+.progress{display:flex;gap:6px;margin-bottom:24px}
+.prog-dot{height:4px;border-radius:2px;flex:1;background:var(--border);transition:background 0.3s}
+.prog-dot.done{background:var(--accent)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="logo">
+    <div class="logo-text">Lingua<span>Cloud</span></div>
+  </div>
+  <div class="card">
+
+    <!-- PROGRESS -->
+    <div class="progress">
+      <div class="prog-dot done" id="p1"></div>
+      <div class="prog-dot" id="p2"></div>
+      <div class="prog-dot" id="p3"></div>
+      <div class="prog-dot" id="p4"></div>
+    </div>
+
+    <!-- STEP 1: AGE GATE -->
+    <div class="step active" id="step-age">
+      <h2>Who's learning?</h2>
+      <p class="sub">This helps us set up the right experience and ensure our platform is safe for your learner.</p>
+      <div class="age-grid">
+        <div class="age-opt" onclick="selectAge('child')">
+          <span class="age-icon">👧</span>
+          <div class="age-label">My Child</div>
+          <div class="age-sub">I'm a parent/guardian</div>
+        </div>
+        <div class="age-opt" onclick="selectAge('teen')">
+          <span class="age-icon">🧑</span>
+          <div class="age-label">Myself (13+)</div>
+          <div class="age-sub">I'm 13 or older</div>
+        </div>
+      </div>
+      <div class="info-box">
+        <strong>Privacy first.</strong> We never show ads, never sell data, and never share your information with third parties. Children's accounts are COPPA compliant.
+      </div>
+    </div>
+
+    <!-- STEP 2A: CHILD → PARENT SETUP -->
+    <div class="step" id="step-parent">
+      <h2>Parent Account Setup</h2>
+      <p class="sub">You'll manage your child's learning account. We'll send a verification email to confirm your consent.</p>
+
+      <label>Parent's Full Name <span class="req">*</span></label>
+      <input type="text" id="parent-name" placeholder="Your name">
+
+      <label>Parent's Email <span class="req">*</span></label>
+      <input type="email" id="parent-email" placeholder="your@email.com">
+
+      <label>Child's First Name <span class="req">*</span></label>
+      <input type="text" id="child-name" placeholder="Child's first name only">
+
+      <label>Child's Age <span class="req">*</span></label>
+      <select id="child-age">
+        <option value="">Select age</option>
+        <option value="3">3</option><option value="4">4</option><option value="5">5</option>
+        <option value="6">6</option><option value="7">7</option><option value="8">8</option>
+        <option value="9">9</option><option value="10">10</option><option value="11">11</option>
+        <option value="12">12</option>
+      </select>
+
+      <div class="info-box">
+        <strong>COPPA Compliance:</strong> As required by the Children's Online Privacy Protection Act, we need verifiable parental consent before your child uses LinguaCloud. You'll receive an email to confirm your consent.
+      </div>
+
+      <ul class="consent-list">
+        <li>Your child's voice practice audio is processed in real-time and never stored permanently</li>
+        <li>No personal data from your child is sold or shared with advertisers</li>
+        <li>You can delete your child's account and all associated data at any time</li>
+        <li>You will receive weekly progress reports by email</li>
+      </ul>
+
+      <div class="checkbox-row">
+        <input type="checkbox" id="consent-coppa">
+        <span>I am the parent or legal guardian of this child, and I consent to their use of LinguaCloud under the <a href="children-privacy.html" target="_blank">Children's Privacy Policy</a>. <span class="req">*</span></span>
+      </div>
+      <div class="checkbox-row">
+        <input type="checkbox" id="consent-data">
+        <span>I understand that voice/audio from language practice sessions is processed in real-time and subject to our <a href="privacy.html" target="_blank">Privacy Policy</a>. <span class="req">*</span></span>
+      </div>
+      <div class="checkbox-row">
+        <input type="checkbox" id="consent-age">
+        <span>I confirm I am 18 years of age or older. <span class="req">*</span></span>
+      </div>
+
+      <button class="btn" onclick="submitParent()">Send Verification Email</button>
+      <button class="btn-outline" onclick="goStep('step-age')">← Back</button>
+    </div>
+
+    <!-- STEP 2B: SELF (13+) SETUP -->
+    <div class="step" id="step-self">
+      <h2>Create Your Account</h2>
+      <p class="sub">You must be 13 or older to create an account directly. If you're under 13, ask a parent to sign up.</p>
+
+      <label>Full Name <span class="req">*</span></label>
+      <input type="text" id="self-name" placeholder="Your name">
+
+      <label>Email <span class="req">*</span></label>
+      <input type="email" id="self-email" placeholder="your@email.com">
+
+      <label>Password <span class="req">*</span></label>
+      <input type="password" id="self-pw" placeholder="At least 8 characters">
+
+      <label>Your Age <span class="req">*</span></label>
+      <select id="self-age" onchange="checkSelfAge()">
+        <option value="">Select age</option>
+        <option value="13">13</option><option value="14">14</option>
+        <option value="15">15</option><option value="16">16</option>
+        <option value="17">17</option><option value="18+">18 or older</option>
+      </select>
+      <div id="age-warning" style="display:none;color:var(--red);font-size:12px;margin-top:-10px;margin-bottom:14px">
+        ⚠️ You must be 13 or older to create an account. Please ask a parent to sign up on your behalf.
+      </div>
+
+      <div class="checkbox-row">
+        <input type="checkbox" id="self-terms">
+        <span>I agree to the <a href="terms.html" target="_blank">Terms of Service</a> and <a href="privacy.html" target="_blank">Privacy Policy</a>. <span class="req">*</span></span>
+      </div>
+
+      <button class="btn" onclick="submitSelf()">Create Account</button>
+      <button class="btn-outline" onclick="goStep('step-age')">← Back</button>
+    </div>
+
+    <!-- STEP 3: LANGUAGE SELECTION -->
+    <div class="step" id="step-lang">
+      <h2>Choose a language</h2>
+      <p class="sub">Pick the first language to learn. You can add more from your dashboard.</p>
+      <div class="lang-grid">
+        <div class="lang-opt" onclick="selectLang(this,'Spanish')"><span class="lf">🇪🇸</span><div class="ln">Spanish</div></div>
+        <div class="lang-opt" onclick="selectLang(this,'Arabic')"><span class="lf">🇸🇦</span><div class="ln">Arabic</div></div>
+        <div class="lang-opt" onclick="selectLang(this,'French')"><span class="lf">🇫🇷</span><div class="ln">French</div></div>
+        <div class="lang-opt" onclick="selectLang(this,'Mandarin')"><span class="lf">🇨🇳</span><div class="ln">Mandarin</div></div>
+        <div class="lang-opt" onclick="selectLang(this,'Japanese')"><span class="lf">🇯🇵</span><div class="ln">Japanese</div></div>
+        <div class="lang-opt" onclick="selectLang(this,'German')"><span class="lf">🇩🇪</span><div class="ln">German</div></div>
+        <div class="lang-opt" onclick="selectLang(this,'Portuguese')"><span class="lf">🇵🇹</span><div class="ln">Portuguese</div></div>
+        <div class="lang-opt" onclick="selectLang(this,'Hindi')"><span class="lf">🇮🇳</span><div class="ln">Hindi</div></div>
+        <div class="lang-opt" onclick="selectLang(this,'Korean')"><span class="lf">🇰🇷</span><div class="ln">Korean</div></div>
+      </div>
+      <button class="btn" id="btn-lang" onclick="goToSuccess()" disabled style="opacity:0.5">Continue →</button>
+    </div>
+
+    <!-- STEP 4: SUCCESS -->
+    <div class="step" id="step-success">
+      <span class="success-icon">🎉</span>
+      <h2 style="text-align:center" id="success-title">Account Created!</h2>
+      <p class="sub" style="text-align:center" id="success-sub">Check your email to verify and start learning.</p>
+
+      <div class="info-box" id="success-coppa" style="display:none">
+        <strong>✉️ Verification Email Sent</strong><br>
+        We've sent a consent verification email to your inbox. Your child can begin their free trial once you confirm — this usually takes less than 2 minutes.
+      </div>
+
+      <ul class="consent-list" id="success-features">
+        <li>7-day free trial — no credit card needed</li>
+        <li>Daily lessons tailored to your learner's level</li>
+        <li>Progress tracked and reported weekly</li>
+        <li>Cancel anytime from your dashboard</li>
+      </ul>
+
+      <a href="app.html" class="btn" style="display:block;text-align:center;text-decoration:none;line-height:1.4">
+        Start Learning Now →
+      </a>
+    </div>
+
+  </div>
+
+  <p style="text-align:center;margin-top:16px;font-size:12px;color:var(--text2)">
+    Questions? <a href="mailto:privacy@linguacloud.app" style="color:var(--accent)">privacy@linguacloud.app</a>
+    &nbsp;·&nbsp; <a href="children-privacy.html" style="color:var(--accent)">Children's Privacy Policy</a>
+  </p>
+</div>
+
+<script>
+let userType = null;
+let selectedLang = null;
+const progress = {
+  'step-age':1,'step-parent':2,'step-self':2,'step-lang':3,'step-success':4
+};
+
+function goStep(id){
+  document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const p = progress[id]||1;
+  for(let i=1;i<=4;i++) document.getElementById('p'+i).classList.toggle('done',i<=p);
+}
+
+function selectAge(type){
+  userType = type;
+  if(type==='child') goStep('step-parent');
+  else goStep('step-self');
+}
+
+function checkSelfAge(){
+  const age = document.getElementById('self-age').value;
+  const under13 = ['3','4','5','6','7','8','9','10','11','12'].includes(age);
+  document.getElementById('age-warning').style.display = under13?'block':'none';
+}
+
+function submitParent(){
+  const name = document.getElementById('parent-name').value.trim();
+  const email = document.getElementById('parent-email').value.trim();
+  const child = document.getElementById('child-name').value.trim();
+  const age = document.getElementById('child-age').value;
+  const c1 = document.getElementById('consent-coppa').checked;
+  const c2 = document.getElementById('consent-data').checked;
+  const c3 = document.getElementById('consent-age').checked;
+
+  if(!name||!email||!child||!age){alert('Please fill in all required fields.');return}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){alert('Please enter a valid email address.');return}
+  if(!c1||!c2||!c3){alert('Please accept all required consents to continue.');return}
+
+  goStep('step-lang');
+}
+
+function submitSelf(){
+  const name = document.getElementById('self-name').value.trim();
+  const email = document.getElementById('self-email').value.trim();
+  const pw = document.getElementById('self-pw').value;
+  const age = document.getElementById('self-age').value;
+  const terms = document.getElementById('self-terms').checked;
+
+  if(!name||!email||!pw||!age){alert('Please fill in all required fields.');return}
+  if(['3','4','5','6','7','8','9','10','11','12'].includes(age)){
+    alert('You must be 13 or older to create an account. Please ask a parent to sign up for you.');return;
+  }
+  if(pw.length<8){alert('Password must be at least 8 characters.');return}
+  if(!terms){alert('Please accept the Terms of Service to continue.');return}
+
+  goStep('step-lang');
+}
+
+function selectLang(el,lang){
+  document.querySelectorAll('.lang-opt').forEach(l=>l.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedLang = lang;
+  const btn = document.getElementById('btn-lang');
+  btn.disabled = false;
+  btn.style.opacity = '1';
+}
+
+function goToSuccess(){
+  if(!selectedLang) return;
+  const title = document.getElementById('success-title');
+  const sub = document.getElementById('success-sub');
+  const coppaBox = document.getElementById('success-coppa');
+  if(userType==='child'){
+    title.textContent = 'One more step!';
+    sub.textContent = 'Check your email inbox to confirm your parental consent.';
+    coppaBox.style.display = 'block';
+  } else {
+    title.textContent = '🎉 You\'re all set!';
+    sub.textContent = `Your 7-day free trial for ${selectedLang} starts now.`;
+  }
+  goStep('step-success');
+}
+</script>
+</body>
+</html>
