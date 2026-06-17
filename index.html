@@ -406,12 +406,58 @@
 <div class="cta-section">
   <div class="section-label" style="text-align:center">GET STARTED</div>
   <h2>Give your kids the gift<br>of a second language.</h2>
-  <p>7-day free trial. No credit card needed. Cancel anytime.</p>
-  <a href="#pricing" class="btn-primary" style="font-size:16px;padding:16px 40px;display:inline-block">
-    Start Free Trial Today
-  </a>
-  <p style="margin-top:16px;font-size:13px;color:var(--text2)">Nile Dreams Digital · niledreamsdigital.com</p>
+  <p>Join thousands of families on the waitlist.</p>
+
+  <div id="lc-form" style="max-width:420px;margin:24px auto 0">
+    <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
+      <input type="email" id="lc-email" placeholder="your@email.com"
+        style="flex:1;min-width:200px;padding:14px 18px;border:1.5px solid var(--border);border-radius:10px;background:var(--surface);color:var(--text);font-size:15px;outline:none">
+      <button onclick="lcJoin()"
+        style="padding:14px 28px;background:var(--accent2);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;transition:opacity 0.2s">
+        Join Waitlist
+      </button>
+    </div>
+    <p id="lc-msg" style="margin-top:10px;font-size:13px;color:var(--text2);min-height:18px;text-align:center"></p>
+  </div>
+
+  <div id="lc-share" style="display:none;text-align:center">
+    <p style="font-size:20px;font-weight:800;color:var(--text);margin-bottom:8px">You're on the list!</p>
+    <p style="font-size:14px;color:var(--text2);margin-bottom:20px">Share with 3 friends to move up the queue.</p>
+    <a id="lc-wa" href="#" target="_blank" rel="noopener"
+      style="display:inline-flex;align-items:center;gap:8px;padding:14px 28px;background:#25D366;color:#fff;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none">
+      📱 Share on WhatsApp
+    </a>
+  </div>
+
+  <p style="margin-top:20px;font-size:13px;color:var(--text2)">Nile Dreams Digital · niledreamsdigital.com</p>
 </div>
+
+<script>
+async function lcJoin(){
+  const email=document.getElementById('lc-email').value.trim();
+  const msg=document.getElementById('lc-msg');
+  if(!email||!email.includes('@')){msg.textContent='Please enter a valid email.';msg.style.color='#f87171';return;}
+  msg.textContent='Joining waitlist...';msg.style.color='var(--text2)';
+  try{
+    const r=await fetch('https://hvyfeebazmiqateniupm.supabase.co/rest/v1/linguacloud_signups',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'apikey':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2eWZlZWJhem1pcWF0ZW5pdXBtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAxMTI2MTcsImV4cCI6MjA5NTY4ODYxN30.89qqEshOwp1bU2AQbzSpZ36_TuqP2jVULo_9Ug-S9_c',
+        'Authorization':'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2eWZlZWJhem1pcWF0ZW5pdXBtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAxMTI2MTcsImV4cCI6MjA5NTY4ODYxN30.89qqEshOwp1bU2AQbzSpZ36_TuqP2jVULo_9Ug-S9_c',
+        'Prefer':'return=minimal'
+      },
+      body:JSON.stringify({email:email,source:'linguacloud-homepage'})
+    });
+    if(!r.ok&&r.status!==409){throw new Error();}
+    document.getElementById('lc-form').style.display='none';
+    const share=document.getElementById('lc-share');share.style.display='block';
+    const t=encodeURIComponent('Just joined the LinguaCloud waitlist — AI language tutors for kids! Join me: https://wisethoth7.github.io/linguacloud/');
+    document.getElementById('lc-wa').href='https://wa.me/?text='+t;
+  }catch(e){msg.textContent='Something went wrong. Please try again.';msg.style.color='#f87171';}
+}
+document.getElementById('lc-email').addEventListener('keydown',e=>{if(e.key==='Enter')lcJoin();});
+</script>
 
 <!-- FOOTER -->
 <footer>
