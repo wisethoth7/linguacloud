@@ -31,11 +31,11 @@
   /* NAV */
   nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    padding: 16px 48px; display: flex; justify-content: space-between; align-items: center;
+    padding: 20px 48px; display: flex; justify-content: space-between; align-items: center;
     background: rgba(8,1,18,0.92); backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border);
   }
-  .nav-logo { font-size: 18px; font-weight: 800; color: var(--text); letter-spacing: -0.5px; }
+  .nav-logo { font-size: 18px; font-weight: 800; color: var(--text); letter-spacing: -0.5px; display: flex; align-items: center; gap: 8px; }
   .nav-logo span { color: var(--accent); }
   .nav-links { display: flex; gap: 28px; list-style: none; }
   .nav-links a { color: var(--text2); text-decoration: none; font-size: 14px; transition: color 0.2s; }
@@ -73,17 +73,36 @@
   .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
 
   /* CHARACTERS */
+  @keyframes char-float {
+    0%, 100% { transform: translateY(0); box-shadow: 0 0 0 0 transparent; }
+    50% { transform: translateY(-4px); box-shadow: 0 0 14px 3px rgba(167,139,250,0.18); }
+  }
+  /* Phase 2: lip-sync animation — each character syncs mouth emoji to audio output timing */
   .chars-row { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; padding: 0 20px; }
   .char-bubble {
     background: var(--card); border: 1px solid var(--border);
     border-radius: 16px; padding: 16px 18px; text-align: center;
-    min-width: 80px; transition: transform 0.2s, border-color 0.2s;
-    cursor: pointer;
+    min-width: 80px; cursor: pointer;
+    animation: char-float 3s ease-in-out infinite;
   }
-  .char-bubble:hover { transform: translateY(-4px) scale(1.05); border-color: var(--accent); }
+  .chars-row .char-bubble:nth-child(1) { animation-delay: 0s; }
+  .chars-row .char-bubble:nth-child(2) { animation-delay: 0.38s; }
+  .chars-row .char-bubble:nth-child(3) { animation-delay: 0.76s; }
+  .chars-row .char-bubble:nth-child(4) { animation-delay: 1.14s; }
+  .chars-row .char-bubble:nth-child(5) { animation-delay: 1.52s; }
+  .chars-row .char-bubble:nth-child(6) { animation-delay: 1.9s; }
+  .chars-row .char-bubble:nth-child(7) { animation-delay: 2.28s; }
+  .chars-row .char-bubble:nth-child(8) { animation-delay: 2.66s; }
+  .char-bubble:hover {
+    animation: none;
+    transform: translateY(-4px) scale(1.05);
+    border-color: var(--accent);
+    box-shadow: 0 0 20px 6px rgba(167,139,250,0.35);
+    transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+  }
   .char-emoji { font-size: 28px; display: block; margin-bottom: 6px; }
   .char-name { font-size: 11px; font-weight: 700; color: var(--accent); }
-  .char-lang { font-size: 10px; color: var(--text2); margin-top: 2px; }
+  .char-trait { font-size: 10px; color: var(--text2); margin-top: 2px; }
 
   /* TRUST BAR */
   .trust-bar { padding: 28px 48px; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); display: flex; justify-content: center; gap: 48px; flex-wrap: wrap; }
@@ -154,13 +173,16 @@
 
   /* RESPONSIVE */
   @media (max-width: 768px) {
-    nav { padding: 14px 20px; }
+    nav { padding: 16px 24px; }
     .nav-links { display: none; }
     h1 { font-size: 38px; letter-spacing: -2px; }
+    .hero { padding: 100px 20px 48px; }
     .section, .lang-section, .safety-section, .pricing-section { padding: 60px 20px; }
     .features-grid, .pricing-grid, .safety-grid { grid-template-columns: 1fr; }
     .lang-grid { grid-template-columns: repeat(3, 1fr); }
-    .trust-bar { gap: 20px; }
+    .trust-bar { gap: 24px; padding: 24px 20px; }
+    .chars-row { gap: 10px; }
+    .char-bubble { padding: 12px 14px; min-width: 70px; }
     footer { flex-direction: column; gap: 10px; text-align: center; }
   }
 </style>
@@ -169,7 +191,25 @@
 
 <!-- NAV -->
 <nav>
-  <div class="nav-logo">Lingua<span>Cloud</span></div>
+  <div class="nav-logo">
+    <svg width="34" height="26" viewBox="0 0 34 26" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <!-- Cloud body (amber/yellow) -->
+      <ellipse cx="17" cy="20" rx="13" ry="6" fill="#FBBF24"/>
+      <circle cx="10" cy="17" r="5.5" fill="#FBBF24"/>
+      <circle cx="17" cy="15" r="6.5" fill="#FBBF24"/>
+      <circle cx="24" cy="17" r="4.5" fill="#FBBF24"/>
+      <!-- Graduation cap (purple) -->
+      <rect x="11" y="8.5" width="12" height="2" rx="1" fill="#7C3AED"/>
+      <polygon points="17,4.5 23.5,8.5 17,10.5 10.5,8.5" fill="#7C3AED"/>
+      <line x1="23.5" y1="8.5" x2="25.5" y2="12" stroke="#7C3AED" stroke-width="1.5" stroke-linecap="round"/>
+      <circle cx="25.5" cy="12.5" r="1" fill="#7C3AED"/>
+      <!-- Glasses on cloud face (dark) -->
+      <rect x="9.5" y="17" width="5" height="3.5" rx="1.75" fill="none" stroke="#1E293B" stroke-width="1.5"/>
+      <rect x="19.5" y="17" width="5" height="3.5" rx="1.75" fill="none" stroke="#1E293B" stroke-width="1.5"/>
+      <line x1="14.5" y1="18.75" x2="19.5" y2="18.75" stroke="#1E293B" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+    Lingua<span>Cloud</span>
+  </div>
   <ul class="nav-links">
     <li><a href="#features">Features</a></li>
     <li><a href="#languages">Languages</a></li>
@@ -185,53 +225,53 @@
   <div class="hero-orb2"></div>
   <div class="hero-eyebrow">CHILDREN'S LANGUAGE LEARNING · AGES 3–14</div>
   <h1>Your Kids Learn Languages<br>with <span class="h1-accent">AI Friends</span><br>They Love.</h1>
-  <p class="hero-sub">Animated AI tutors that make learning feel like play. 15 languages. Real accent choices. Safe, ad-free, and designed specifically for children.</p>
+  <p class="hero-sub">AI tutor personalities your kids will love. 15 languages available from day one. Learn at your own pace — safe, ad-free, and COPPA compliant.</p>
   <div class="hero-actions">
     <a href="#pricing" class="btn-primary">Start Free Trial — 7 Days</a>
     <a href="#features" class="btn-secondary">See how it works</a>
   </div>
 
-  <!-- Character Row -->
+  <!-- Character Row — tutors are personalities, not language representatives -->
   <div class="chars-row">
     <div class="char-bubble">
       <span class="char-emoji">🦁</span>
       <div class="char-name">Leo</div>
-      <div class="char-lang">Spanish</div>
+      <div class="char-trait">brave learner</div>
     </div>
     <div class="char-bubble">
-      <span class="char-emoji">🧙</span>
+      <span class="char-emoji">🌟</span>
       <div class="char-name">Zara</div>
-      <div class="char-lang">French</div>
+      <div class="char-trait">curious explorer</div>
     </div>
     <div class="char-bubble">
-      <span class="char-emoji">🤖</span>
+      <span class="char-emoji">🚀</span>
       <div class="char-name">Nova</div>
-      <div class="char-lang">Japanese</div>
+      <div class="char-trait">adventurous</div>
     </div>
     <div class="char-bubble">
-      <span class="char-emoji">🧜</span>
+      <span class="char-emoji">🌊</span>
       <div class="char-name">Mira</div>
-      <div class="char-lang">Arabic</div>
+      <div class="char-trait">calm &amp; patient</div>
     </div>
     <div class="char-bubble">
       <span class="char-emoji">⚡</span>
       <div class="char-name">Bolt</div>
-      <div class="char-lang">German</div>
-    </div>
-    <div class="char-bubble">
-      <span class="char-emoji">🐉</span>
-      <div class="char-name">Drake</div>
-      <div class="char-lang">Mandarin</div>
-    </div>
-    <div class="char-bubble">
-      <span class="char-emoji">🧚</span>
-      <div class="char-name">Pixie</div>
-      <div class="char-lang">Italian</div>
+      <div class="char-trait">fast &amp; fun</div>
     </div>
     <div class="char-bubble">
       <span class="char-emoji">🥷</span>
       <div class="char-name">Zuko</div>
-      <div class="char-lang">Korean</div>
+      <div class="char-trait">focused</div>
+    </div>
+    <div class="char-bubble">
+      <span class="char-emoji">🧚</span>
+      <div class="char-name">Pixie</div>
+      <div class="char-trait">playful</div>
+    </div>
+    <div class="char-bubble">
+      <span class="char-emoji">🐉</span>
+      <div class="char-name">Drake</div>
+      <div class="char-trait">wise storyteller</div>
     </div>
   </div>
 </section>
@@ -255,8 +295,8 @@
     <div class="features-grid">
       <div class="feat-card">
         <div class="feat-icon">🦁</div>
-        <div class="feat-title">11 Animated AI Tutors</div>
-        <div class="feat-body">Original characters kids genuinely want to spend time with. Each character has a unique personality, accent, and teaching style matched to their language.</div>
+        <div class="feat-title">8 AI Tutor Personalities</div>
+        <div class="feat-body">Leo, Zara, Nova, Mira, Bolt, Zuko, Pixie, and Drake. Each has a unique personality and teaching style — any tutor can teach any language.</div>
       </div>
       <div class="feat-card">
         <div class="feat-icon">⏱️</div>
@@ -265,8 +305,8 @@
       </div>
       <div class="feat-card">
         <div class="feat-icon">🎤</div>
-        <div class="feat-title">Real Accent Choices</div>
-        <div class="feat-body">Learning "Spanish" isn't the same as learning Mexican, Castilian, or Colombian Spanish. Kids learn the version that's right for their family and community.</div>
+        <div class="feat-title">Conversational Practice</div>
+        <div class="feat-body">The AI tutor responds to what your child actually says — not just multiple choice. Real back-and-forth builds genuine speaking confidence over time.</div>
       </div>
       <div class="feat-card">
         <div class="feat-icon">🧠</div>
@@ -382,7 +422,7 @@
       <div class="safety-icon">🛡️</div>
       <div>
         <div class="safety-title">COPPA Compliant</div>
-        <div class="safety-body">We follow Children's Online Privacy Protection Act (COPPA) guidelines. No personal data collected from children under 13 without verifiable parental consent.</div>
+        <div class="safety-body">We follow Children's Online Privacy Protection Act (COPPA) guidelines. No personal data collected from children under 13 without verifiable parental consent. <a href="https://www.ftc.gov/childrens-privacy" target="_blank" rel="noopener" style="color:var(--accent)">FTC COPPA info →</a></div>
       </div>
     </div>
     <div class="safety-card">
@@ -406,7 +446,7 @@
 <div class="cta-section">
   <div class="section-label" style="text-align:center">GET STARTED</div>
   <h2>Give your kids the gift<br>of a second language.</h2>
-  <p>Join thousands of families on the waitlist.</p>
+  <p>Join families on the waitlist. Be first when we launch.</p>
 
   <div id="lc-form" style="max-width:420px;margin:24px auto 0">
     <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
@@ -429,7 +469,7 @@
     </a>
   </div>
 
-  <p style="margin-top:20px;font-size:13px;color:var(--text2)">Nile Dreams Digital · thothwisdom7@gmail.com</p>
+  <p style="margin-top:20px;font-size:13px;color:var(--text2)">Nile Dreams Digital · <a href="mailto:thothwisdom7@gmail.com" style="color:var(--text2)">thothwisdom7@gmail.com</a></p>
 </div>
 
 <script>
@@ -450,6 +490,12 @@ async function lcJoin(){
       body:JSON.stringify({email:email,source:'linguacloud-homepage'})
     });
     if(!r.ok&&r.status!==409){throw new Error();}
+    // Welcome email (non-blocking)
+    fetch('https://hvyfeebazmiqateniupm.supabase.co/functions/v1/send-welcome-email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ to: email, product: 'linguacloud' })
+    }).catch(() => {});
     document.getElementById('lc-form').style.display='none';
     const share=document.getElementById('lc-share');share.style.display='block';
     const t=encodeURIComponent('Just joined the LinguaCloud waitlist — AI language tutors for kids! Join me: https://wisethoth7.github.io/linguacloud/');
@@ -457,6 +503,13 @@ async function lcJoin(){
   }catch(e){msg.textContent='Something went wrong. Please try again.';msg.style.color='#f87171';}
 }
 document.getElementById('lc-email').addEventListener('keydown',e=>{if(e.key==='Enter')lcJoin();});
+</script>
+<script src="ra-widget.js"></script>
+<script>
+initRa({
+  accentColor: '#A78BFA',
+  systemPrompt: 'You are Ra, a warm and reassuring AI assistant for LinguaCloud — an AI-powered language learning platform for children ages 3-14. Help parents with: how the AI tutor characters work (Leo, Zara, Nova, Mira, Bolt, Zuko, Pixie, Drake — personality-based tutors, not language-specific), available languages (15 from day one), child safety and COPPA compliance, waitlist status, and how to share with friends to skip the queue. Always be gentle and reassuring — you are speaking to parents about their children\'s education. For billing questions, direct to thothwisdom7@gmail.com.'
+});
 </script>
 
 <!-- FOOTER -->
